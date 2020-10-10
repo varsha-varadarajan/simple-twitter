@@ -15,6 +15,8 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     Context context;
@@ -64,22 +66,38 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfileImage;
+        TextView tvName;
         TextView tvScreenName;
         TextView tvBody;
+        TextView tvTimestamp;
+        TextView tvFavoriteCount;
+        TextView tvRetweetCount;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            tvName = itemView.findViewById(R.id.tvName);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
+            tvTimestamp = itemView.findViewById(R.id.tvTimestamp);
+            tvFavoriteCount = itemView.findViewById(R.id.tvFavoriteCount);
+            tvRetweetCount = itemView.findViewById(R.id.tvRetweetCount);
         }
 
         // fill in all the views in Layout with information from tweet
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
+            tvName.setText(tweet.user.name);
             tvScreenName.setText(tweet.user.screenName);
+            tvTimestamp.setText(tweet.getFormattedTimestamp());
+            tvFavoriteCount.setText(tweet.favoriteCount);
+            tvRetweetCount.setText(tweet.retweetCount);
 
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            Glide.with(context)
+                    .load(tweet.user.profileImageUrl)
+                    .transform(new RoundedCornersTransformation(50, 10))
+                    .into(ivProfileImage);
         }
     }
 }
